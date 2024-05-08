@@ -1,0 +1,19 @@
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity;
+
+namespace EmailSenderAppWithIdentity
+{
+    public class CustomEmailDefaultMessages<TUser>(IEmailSender emailSender) : IEmailSender<TUser> where TUser : class
+    {
+        internal bool IsNoOp => emailSender is NoOpEmailSender;
+
+        public Task SendConfirmationLinkAsync(TUser user, string email, string confirmationLink) =>
+            emailSender.SendEmailAsync(email, "Confirme su cuenta.", $"<html lang=\"es\"><head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Bienvenido a BP</title>\r\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\r\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin=\"\">\r\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter&amp;display=swap\" rel=\"stylesheet\">\r\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@900&amp;display=swap\" rel=\"stylesheet\">\r\n    <style>\r\n      * {{\r\n        font-family: \"Inter\";\r\n      }}\r\n\r\n      body {{\r\n        height: 100vh;\r\n        max-height: 100vh;\r\n        display: flex;\r\n        flex-direction: column;\r\n        justify-content: center;\r\n        align-items: center;\r\n        gap: 5vh;\r\n        margin: 0;\r\n      }}\r\n\r\n      div {{\r\n        display: flex;\r\n        gap: 1rem;\r\n        flex-direction: column;\r\n        justify-content: center;\r\n        align-items: center;\r\n      }}\r\n\r\n      h1 {{\r\n        font-weight: 900;\r\n        margin: 0;\r\n        font-size: min(10vw, 3rem);\r\n      }}\r\n\r\n      p {{\r\n        margin: 0;\r\n        font-size: min(5vw, 1.25rem);\r\n      }}\r\n\r\n      a {{\r\n        font-size: min(6vw, 1.5rem);\r\n        color: #007bcd;\r\n      }}\r\n\r\n      .disclaimer {{\r\n        background-color: #d1a000;\r\n        padding: 1rem;\r\n        border-radius: 0.5rem;\r\n        font-size: 1rem;\r\n        display: flex;\r\n        align-content: center;\r\n        gap: 0.5rem;\r\n      }}\r\n\r\n      .disclaimer svg {{\r\n        min-width: 1.25rem;\r\n      }}\r\n\r\n      .light {{\r\n        width: 10rem;\r\n        height: 10rem;\r\n        background-color: #fff16f;\r\n        position: absolute;\r\n        z-index: -1;\r\n        border-radius: 50%;\r\n        filter: blur(50px);\r\n      }}\r\n    </style>\r\n  </head>\r\n  <body>\r\n    <div style=\"position: relative\">\r\n      <h1>Bienvenido a BP</h1>\r\n      <p>Su cuenta está casi lista</p>\r\n      <div class=\"light\"></div>\r\n    </div>\r\n    <a href=\"{confirmationLink}\">Confirmar correo electrónico</a>\r\n    <p class=\"disclaimer\">\r\n      <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"icon icon-tabler icons-tabler-outline icon-tabler-alert-triangle\">\r\n        <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"></path>\r\n        <path d=\"M12 9v4\"></path>\r\n        <path d=\"M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z\"></path>\r\n        <path d=\"M12 16h.01\"></path></svg>Si usted no solicitó este correo, ignórelo.\r\n    </p>\r\n  \r\n\r\n</body></html>");
+
+        public Task SendPasswordResetLinkAsync(TUser user, string email, string resetLink) =>
+            emailSender.SendEmailAsync(email, "Reset your password", $"Please reset your password by <a href='{resetLink}'>clicking here</a>.");
+
+        public Task SendPasswordResetCodeAsync(TUser user, string email, string resetCode) =>
+            emailSender.SendEmailAsync(email, "Reset your password", $"Please reset your password using the following code: {resetCode}");
+    }
+}
